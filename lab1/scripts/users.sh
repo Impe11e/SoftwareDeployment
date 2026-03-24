@@ -20,11 +20,14 @@ if ! id "teacher" &>/dev/null; then
 fi
 
 if ! id "operator" &>/dev/null; then
-    useradd -m -s /bin/bash operator
-    echo "operator:12345678" | chpasswd
-    chage -d 0 operator
-    echo "Користувач operator створений."
+    if getent group operator &>/dev/null; then
+        useradd -m -s /bin/bash -g operator operator
+    else
+        useradd -m -s /bin/bash operator
+    fi
 fi
+echo "operator:12345678" | chpasswd
+chage -d 0 operator
 
 if ! id "mywebapp" &>/dev/null; then
     useradd -r -s /usr/sbin/nologin mywebapp
@@ -36,15 +39,9 @@ echo ">>> Налаштування обмеженого sudo для operator:"
 SCTL="/usr/bin/systemctl"
 NGINX="/usr/sbin/nginx"
 
-cat <<EOF > /etc/sudoers.d/operator-rules
-operator ALL=(ALL) NOPASSWD: $SCTL start mywebapp.service, \\
-                             $SCTL stop mywebapp.service, \\
-                             $SCTL restart mywebapp.service, \\
-                             $SCTL status mywebapp.service, \\
-                             $SCTL reload nginx, \\
-                             $NGINX -s reload, \\
-                             $NGINX -t
+cat <<EOF | sudo tee /etc/sudoers.d/operator
+operator ALL=(ALL) NOPASSWD: /usr/bin/systemctl start mywebapp, /usr/bin/systemctl stop mywebapp, /usr/bin/systemctl restart mywebapp, /usr/bin/systemctl status mywebapp, /usr/bin/systemctl reload nginx
 EOF
 
-chmod 0440 /etc/sudoers.d/operator-rules
+sudo chmod 0440 /etc/sudoers.d/operator
 echo "Права sudoers для operator налаштовані."

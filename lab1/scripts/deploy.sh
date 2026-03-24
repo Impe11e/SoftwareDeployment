@@ -5,7 +5,28 @@ ROOT_DIR="/home/student/software_deployment/lab1"
 APP_DIR="$ROOT_DIR/mywebapp"
 VARIANT=27
 
-echo ">>> Етап 4. Налаштування сервісу та прав"
+echo ">>> Етап 4. Налаштування сервісу та прав. Створення конфігурації"
+
+sudo mkdir -p /etc/mywebapp
+
+cat <<EOF | sudo tee /etc/mywebapp/config.json
+{
+  "server": {
+    "host": "127.0.0.1",
+    "port": 3000
+  },
+  "db": {
+    "user": "mywebapp",
+    "host": "127.0.0.1",
+    "database": "mywebapp_db",
+    "password": "password",
+    "port": 5432
+  }
+}
+EOF
+
+sudo chown -R root:mywebapp /etc/mywebapp
+sudo chmod 640 /etc/mywebapp/config.json
 
 echo "$VARIANT" > /home/student/gradebook
 chown student:student /home/student/gradebook
