@@ -37,5 +37,5 @@ const PORT = config.server?.port;
 const HOST = config.server?.host;
 
 app.listen(PORT, HOST, () => {
-    console.log(`🚀 Server started on http://${HOST}:${PORT}`);
+    console.log(`Server started on http://${HOST}:${PORT}`);
 });
