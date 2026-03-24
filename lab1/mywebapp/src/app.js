@@ -33,9 +33,15 @@ app.get('/notes', notesController.getAllNotes);
 app.get('/notes/:id', notesController.getNoteById);
 app.post('/notes', notesController.createNote);
 
-const PORT = config.server?.port;
+const socketFd = process.env.LISTEN_FDS > 0 ? { fd: 3 } : null;
+
+const listenTarget = socketFd || (config.server?.port);
 const HOST = config.server?.host;
 
-app.listen(PORT, HOST, () => {
-    console.log(`Server started on http://${HOST}:${PORT}`);
+app.listen(listenTarget, HOST, () => {
+    if (socketFd) {
+        console.log(`Server started via systemd socket`);
+    } else {
+        console.log(`Server started on http://${HOST}:${listenTarget}`);
+    }
 });
