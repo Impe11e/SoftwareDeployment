@@ -1,6 +1,6 @@
 import express from 'express';
 import config from './config/index.js';
-import { initDatabase } from './db/pool.js';
+import db, { initDatabase } from './db/pool.js';
 import * as notesController from './controllers/notesController.js';
 
 const app = express();
@@ -25,7 +25,7 @@ app.get('/health/ready', async (req, res) => {
         await db.query('SELECT 1');
         res.status(200).send('OK');
     } catch (e) {
-        res.status(500).send('Error: DB is not ready');
+        res.status(500).send(`Error: DB is not ready. ${e.message}`);
     }
 });
 
@@ -33,6 +33,9 @@ app.get('/notes', notesController.getAllNotes);
 app.get('/notes/:id', notesController.getNoteById);
 app.post('/notes', notesController.createNote);
 
-app.listen(config.port, config.host, () => {
-    console.log(`🚀 Server started on http://${config.host}:${config.port}`);
+const PORT = config.server?.port;
+const HOST = config.server?.host;
+
+app.listen(PORT, HOST, () => {
+    console.log(`🚀 Server started on http://${HOST}:${PORT}`);
 });

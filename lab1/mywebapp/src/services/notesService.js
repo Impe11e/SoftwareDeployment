@@ -1,4 +1,4 @@
-import db from '../db/client.js';
+import db from '../db/pool.js';
 
 export const NotesService = {
     async getAll() {

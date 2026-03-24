@@ -1,7 +1,8 @@
 import pg from 'pg';
 import config from '../config/index.js';
 
-const { Pool } = pg;
+// const { Pool } = pg;
+const Pool = pg.Pool;
 
 const pool = new Pool(config.db);
 

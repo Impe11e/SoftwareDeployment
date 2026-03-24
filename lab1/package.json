@@ -1,4 +1,7 @@
 {
+  "name": "mywebapp",
+  "version": "1.0.0",
+  "type": "module",
   "dependencies": {
     "express": "^5.2.1",
     "pg": "^8.20.0"

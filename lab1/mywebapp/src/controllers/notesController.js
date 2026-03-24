@@ -8,7 +8,7 @@ export const getAllNotes = async (req, res) => {
             return res.json(notes);
         }
 
-        let html = '<h1>Notes Service</h1><table border="1"><tr><th>ID</th><th>Title</th><th>Action</th></tr>';
+        let html = '<h1>Notes Service</h1><table border="1"><tr><th>ID</th><th>Title</th><th>Info</th></tr>';
         notes.forEach(n => {
             html += `<tr><td>${n.id}</td><td>${n.title}</td><td><a href="/notes/${n.id}">View</a></td></tr>`;
         });
