@@ -12,7 +12,7 @@ cat <<EOF | sudo tee /etc/mywebapp/config.json
 {
   "server": { "host": "127.0.0.1", "port": 3000 },
   "db": {
-    "user": "mywebapp",
+    "user": "app",
     "host": "127.0.0.1",
     "database": "mywebapp_db",
     "password": "password",
@@ -21,7 +21,7 @@ cat <<EOF | sudo tee /etc/mywebapp/config.json
 }
 EOF
 
-sudo chown -R root:mywebapp /etc/mywebapp
+sudo chown -R root:app /etc/mywebapp
 sudo chmod 640 /etc/mywebapp/config.json
 
 sudo chmod +x /home/student
@@ -31,7 +31,7 @@ sudo chmod +x /home/student/software_deployment/lab1
 cd "$APP_DIR"
 npm install --production
 
-sudo chown -R mywebapp:mywebapp "$APP_DIR"
+sudo chown -R app:app "$APP_DIR"
 sudo chmod -R 755 "$APP_DIR"
 
 echo "$VARIANT" > /home/student/gradebook
@@ -43,8 +43,8 @@ Description=My Web App Service
 After=network.target postgresql.service
 
 [Service]
-User=mywebapp
-Group=mywebapp
+User=app
+Group=app
 WorkingDirectory=$APP_DIR
 Environment=NODE_ENV=production
 

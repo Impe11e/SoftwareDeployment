@@ -29,9 +29,9 @@ fi
 echo "operator:12345678" | chpasswd
 chage -d 0 operator
 
-if ! id "mywebapp" &>/dev/null; then
-    useradd -r -s /usr/sbin/nologin mywebapp
-    echo "Системний користувач mywebapp створений."
+if ! id "app" &>/dev/null; then
+    useradd -r -s /usr/sbin/nologin app
+    echo "Системний користувач app створений."
 fi
 
 echo ">>> Налаштування обмеженого sudo для operator:"
