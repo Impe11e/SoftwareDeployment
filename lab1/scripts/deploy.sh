@@ -5,16 +5,12 @@ ROOT_DIR="/home/student/software_deployment/lab1"
 APP_DIR="$ROOT_DIR/mywebapp"
 VARIANT=27
 
-echo ">>> Етап 4. Налаштування сервісу та прав. Створення конфігурації"
+echo ">>> Етап 4. Налаштування конфігурації та прав"
 
 sudo mkdir -p /etc/mywebapp
-
 cat <<EOF | sudo tee /etc/mywebapp/config.json
 {
-  "server": {
-    "host": "127.0.0.1",
-    "port": 3000
-  },
+  "server": { "host": "127.0.0.1", "port": 3000 },
   "db": {
     "user": "mywebapp",
     "host": "127.0.0.1",
@@ -28,16 +24,20 @@ EOF
 sudo chown -R root:mywebapp /etc/mywebapp
 sudo chmod 640 /etc/mywebapp/config.json
 
-echo "$VARIANT" > /home/student/gradebook
-chown student:student /home/student/gradebook
+sudo chmod +x /home/student
+sudo chmod +x /home/student/software_deployment
+sudo chmod +x /home/student/software_deployment/lab1
 
-cd "$ROOT_DIR"
+cd "$APP_DIR"
 npm install --production
 
-chown -R student:mywebapp "$ROOT_DIR"
-chmod -R 750 "$ROOT_DIR"
+sudo chown -R mywebapp:mywebapp "$APP_DIR"
+sudo chmod -R 755 "$APP_DIR"
 
-cat <<EOF > /etc/systemd/system/mywebapp.service
+echo "$VARIANT" > /home/student/gradebook
+sudo chown student:student /home/student/gradebook
+
+cat <<EOF | sudo tee /etc/systemd/system/mywebapp.service
 [Unit]
 Description=My Web App Service
 After=network.target postgresql.service
@@ -45,12 +45,11 @@ After=network.target postgresql.service
 [Service]
 User=mywebapp
 Group=mywebapp
-WorkingDirectory=/home/student/software_deployment/lab1
+WorkingDirectory=$APP_DIR
 Environment=NODE_ENV=production
 
-ExecStartPre=/usr/bin/node mywebapp/src/db/migrate.js
-
-ExecStart=/usr/bin/node mywebapp/src/app.js
+ExecStartPre=/usr/bin/node src/db/migrate.js
+ExecStart=/usr/bin/node src/app.js
 
 Restart=always
 
@@ -58,8 +57,8 @@ Restart=always
 WantedBy=multi-user.target
 EOF
 
-systemctl daemon-reload
-systemctl enable mywebapp.service
-systemctl restart mywebapp.service
+sudo systemctl daemon-reload
+sudo systemctl enable mywebapp.service
+sudo systemctl restart mywebapp.service
 
-echo ">>> Сервіс запущено."
+echo ">>> Сервіс успішно налаштовано та запущено!"
