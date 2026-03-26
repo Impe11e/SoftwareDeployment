@@ -178,8 +178,8 @@ Here we verify that health is running locally but is closed through Nginx.
 Via Nginx (Should be 403 Forbidden):
 
 ```Bash
-curl -i curl -i http://'your_ip'/health/alive
-curl -i curl -i http://'your_ip'/health/ready
+curl -i http://'your_ip'/health/alive
+curl -i http://'your_ip'/health/ready
 ```
 
 Directly to the application (200 OK):

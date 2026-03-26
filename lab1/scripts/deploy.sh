@@ -37,10 +37,25 @@ sudo chmod -R 755 "$APP_DIR"
 echo "$VARIANT" > /home/student/gradebook
 sudo chown student:student /home/student/gradebook
 
+echo ">>> Налаштування Systemd Socket Activation"
+
+cat <<EOF | sudo tee /etc/systemd/system/mywebapp.socket
+[Unit]
+Description=Socket for MyWebApp
+
+[Socket]
+ListenStream=3000
+BindIPv6Only=both
+
+[Install]
+WantedBy=sockets.target
+EOF
+
 cat <<EOF | sudo tee /etc/systemd/system/mywebapp.service
 [Unit]
 Description=My Web App Service
 After=network.target postgresql.service
+Requires=mywebapp.socket
 
 [Service]
 User=app
@@ -50,15 +65,14 @@ Environment=NODE_ENV=production
 
 ExecStartPre=/usr/bin/node src/db/migrate.js
 ExecStart=/usr/bin/node src/app.js
-
 Restart=always
-
-[Install]
-WantedBy=multi-user.target
 EOF
 
 sudo systemctl daemon-reload
-sudo systemctl enable mywebapp.service
-sudo systemctl restart mywebapp.service
 
-echo ">>> Сервіс успішно налаштовано та запущено!"
+sudo systemctl disable mywebapp.service || true
+
+sudo systemctl enable mywebapp.socket
+sudo systemctl start mywebapp.socket
+
+echo ">>> Сервіс та сокет успішно налаштовано та запущено!"
