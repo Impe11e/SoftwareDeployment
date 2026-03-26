@@ -63,7 +63,7 @@ sudo nano /etc/mywebapp/config.json
     "port": 3000
   },
   "db": {
-    "user": "mywebapp",
+    "user": "app",
     "host": "127.0.0.1",
     "database": "mywebapp_db",
     "password": "password",
@@ -81,14 +81,14 @@ sudo -u postgres psql
 CREATE DATABASE 'mywebapp_db';
 
 -- 2. Create a user and give him a password
-CREATE USER 'mywebapp' WITH ENCRYPTED PASSWORD 'password';
+CREATE USER 'app' WITH ENCRYPTED PASSWORD 'password';
 
--- 3. We give the user all rights to the database
-GRANT ALL PRIVILEGES ON DATABASE 'mywebapp_db' TO 'mywebapp';
+-- 3. Give the user all rights to the database
+GRANT ALL PRIVILEGES ON DATABASE 'mywebapp_db' TO 'app';
 
 -- 4. Log in to the database and grant rights to the schema (critical for Postgres 15+)
 \c 'mywebapp_db'
-GRANT ALL ON SCHEMA public TO 'mywebapp';
+GRANT ALL ON SCHEMA public TO 'app';
 
 -- 5. Exit
 \q
@@ -233,18 +233,18 @@ The forbidden command (should give an error: Sorry, user operator is not allowed
 sudo apt update or sudo cat /etc/shadow
 ```
 
-**3. Check app/mywebapp (System User)**  
+**3. Check app (System User)**  
 This user should not be able to log in or execute sudo.
 
 ```bash
-sudo -l -U mywebapp
+sudo -l -U app
 ```
-Expected result: User mywebapp is not allowed to run sudo on nodeserver3.
+Expected result: User app is not allowed to run sudo on nodeserver3.
 
 Shell check:
 
 ```bash
-grep mywebapp /etc/passwd
+grep app /etc/passwd
 ```
 
 If it ends with /usr/sbin/nologin or /bin/false - minimal rights.
@@ -256,9 +256,9 @@ Does the gradebook file exist:
 cat /home/student/gradebook
 ```
 
-Checking who is running the service (Must be the user mywebapp or app):
+Checking who is running the service (Must be the user app):
 ```bash
-ps aux | grep mywebapp | grep -v grep
+ps aux | grep app | grep -v grep
 ```
 
 ### 6. Checking Nginx logs
