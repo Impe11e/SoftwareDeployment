@@ -6,6 +6,8 @@ services:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mywebapp_db
+    volumes:
+      - db_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U app -d mywebapp_db"]
       interval: 5s
@@ -41,3 +43,5 @@ services:
 networks:
   lab2_net:
     driver: bridge
+volumes:
+  db_data:
