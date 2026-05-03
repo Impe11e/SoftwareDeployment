@@ -1,14 +1,16 @@
-version: '3.8'
 services:
   db:
     image: postgres:15
-    container_name: lab2_postgres
+    container_name: lab2_db
     environment:
       POSTGRES_USER: app
       POSTGRES_PASSWORD: password
       POSTGRES_DB: mywebapp_db
-    volumes:
-      - lab2_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d mywebapp_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
     networks:
       - lab2_net
 
@@ -16,13 +18,11 @@ services:
     build: .
     container_name: lab2_app
     restart: always
-    environment:
-      - DB_HOST=db
-      - DB_USER=app
-      - DB_PASSWORD=password
-      - DB_NAME=mywebapp_db
+    volumes:
+      - ./config.docker.json:/etc/mywebapp/config.json:ro
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - lab2_net
 
@@ -32,13 +32,12 @@ services:
     ports:
       - "8080:80"
     volumes:
-      - ./nginx.conf.docker:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - web
     networks:
       - lab2_net
 
 networks:
   lab2_net:
     driver: bridge
-
-volumes:
-  lab2_db_data:
