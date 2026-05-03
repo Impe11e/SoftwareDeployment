@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: lab2_db
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mywebapp_db
+    volumes:
+      - lab2_pgdata:/var/lib/postgresql/data
+    networks:
+      - lab2_net
+
+  web:
+    build: .
+    container_name: lab2_app
+    volumes:
+      - ./config.docker.json:/etc/mywebapp/config.json:ro
+    depends_on:
+      - db
+    networks:
+      - lab2_net
+
+  nginx:
+    image: nginx:latest
+    container_name: lab2_nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      - web
+    networks:
+      - lab2_net
+
+networks:
+  lab2_net:
+    driver: bridge
+
+volumes:
+  lab2_pgdata:
