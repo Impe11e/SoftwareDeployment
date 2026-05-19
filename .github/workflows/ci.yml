@@ -43,7 +43,7 @@ jobs:
         uses: ludeeus/action-shellcheck@master
         with:
           ignore_paths: node_modules lab3/node_modules
-          
+          severity: error
 
       - name: Run Yamllint for Configs
         uses: ibiqlik/action-yamllint@v3
