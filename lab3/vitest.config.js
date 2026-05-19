@@ -6,6 +6,12 @@ export default defineConfig({
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       include: ['mywebapp/src/app.js', 'mywebapp/src/controllers/**', 'mywebapp/src/services/**'],
+      thresholds: {
+        lines: 40,
+        functions: 40,
+        branches: 40,
+        statements: 40
+      }
     },
   },
 });
