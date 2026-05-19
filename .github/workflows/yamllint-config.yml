@@ -1,5 +1,10 @@
 extends: default
 
+ignore: |
+  node_modules/
+  lab3/node_modules/
+
 rules:
   line-length: disable
   document-start: disable
+  truthy: disable
