@@ -33,6 +33,11 @@ jobs:
         run: |
           cd lab3
           npm ci
+      
+      - name: Run ESLint for Application Code
+        run: |
+          cd lab3
+          npm run lint
 
       - name: Run Dockerfile Linter (Hadolint)
         uses: hadolint/hadolint-action@v3.1.0
