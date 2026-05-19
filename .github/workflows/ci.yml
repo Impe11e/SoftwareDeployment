@@ -33,17 +33,23 @@ jobs:
         run: |
           cd lab3
           npm ci
-      
+
       - name: Run ESLint for Application Code
         run: |
           cd lab3
           npm run lint
 
-      - name: Run Dockerfile Linter (Hadolint)
-        uses: hadolint/hadolint-action@v3.1.0
+      - name: Run ShellCheck for Scripts
+        uses: ludeeus/action-shellcheck@master
         with:
-          dockerfile: lab3/Dockerfile
+          ignore_paths: node_modules lab3/node_modules
 
+      - name: Run Yamllint for Configs
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: .
+          config_file: .github/workflows/yamllint-config.yml
+          
   test:
     name: Automated Tests & Coverage
     runs-on: ubuntu-latest
