@@ -43,13 +43,14 @@ jobs:
         uses: ludeeus/action-shellcheck@master
         with:
           ignore_paths: node_modules lab3/node_modules
+          severity: error
 
       - name: Run Yamllint for Configs
         uses: ibiqlik/action-yamllint@v3
         with:
           file_or_dir: .
           config_file: .github/workflows/yamllint-config.yml
-          
+
   test:
     name: Automated Tests & Coverage
     runs-on: ubuntu-latest
