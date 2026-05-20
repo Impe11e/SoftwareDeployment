@@ -24,4 +24,6 @@ jobs:
 
       - name: Verification
         run: |
+          echo "Waiting for app to initialize..."
+          sleep 15
           curl -f http://${{ secrets.TARGET_IP }}:8080/ || (echo "Deployment failed" && exit 1)
