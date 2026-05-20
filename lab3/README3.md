@@ -1,1 +1,1 @@
-.
+* [Lab #3: CI/CD](https://docs.google.com/document/d/1lj-7s3NTnuDzO8IEgErOLlu_AE4GKdeevi7lpSYxmPs/edit?usp=sharing)
