@@ -16,7 +16,7 @@ jobs:
 
       - name: Deploy via SSH
         run: |
-          ssh -o StrictHostKeyChecking=no student@<IP_TARGET_NODE> << 'EOF'
+          ssh -o StrictHostKeyChecking=no student@${{ secrets.HOST_IP }} << 'EOF'
             cd ~/software_deployment/lab3
             git pull
             sudo systemctl restart mywebapp
@@ -24,4 +24,4 @@ jobs:
 
       - name: Verification
         run: |
-          curl -f http://<IP_TARGET_NODE>:8080/ || (echo "Deployment failed" && exit 1)
+          curl -f http://${{ secrets.HOST_IP }}:8080/ || (echo "Deployment failed" && exit 1)
