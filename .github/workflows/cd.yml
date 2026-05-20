@@ -1,0 +1,27 @@
+name: CD Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    name: Deploy to Target Node
+    environment: production
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no student@<IP_TARGET_NODE> << 'EOF'
+            cd ~/software_deployment/lab3
+            git pull
+            sudo systemctl restart mywebapp
+          EOF
+
+      - name: Verification
+        run: |
+          curl -f http://<IP_TARGET_NODE>:8080/ || (echo "Deployment failed" && exit 1)

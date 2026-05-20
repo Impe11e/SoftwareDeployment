@@ -1,6 +1,6 @@
-import app from './app.js';
-import config from './config/index.js';
-import { initDatabase } from './db/pool.js';
+import app from './src/app.js';
+import config from './src/config/index.js';
+import { initDatabase } from './src/db/pool.js';
 
 await initDatabase();
 
