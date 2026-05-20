@@ -17,7 +17,7 @@ jobs:
   lint:
     name: Code & Docker Lint
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -34,16 +34,28 @@ jobs:
           cd lab3
           npm ci
 
-      - name: Run Dockerfile Linter (Hadolint)
-        uses: hadolint/hadolint-action@v3.1.0
+      - name: Run ESLint for Application Code
+        run: |
+          cd lab3
+          npm run lint
+
+      - name: Run ShellCheck for Scripts
+        uses: ludeeus/action-shellcheck@master
         with:
-          dockerfile: lab3/Dockerfile
+          ignore_paths: node_modules lab3/node_modules
+          severity: error
+
+      - name: Run Yamllint for Configs
+        uses: ibiqlik/action-yamllint@v3
+        with:
+          file_or_dir: .
+          config_file: .github/workflows/yamllint-config.yml
 
   test:
     name: Automated Tests & Coverage
     runs-on: ubuntu-latest
     needs: lint
-    
+
     steps:
       - name: Check out code
         uses: actions/checkout@v4
@@ -109,4 +121,3 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          
