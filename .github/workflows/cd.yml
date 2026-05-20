@@ -18,7 +18,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no student@${{ secrets.TARGET_IP }} << 'EOF'
             cd ~/software_deployment/lab3
-            git pull
+            git pull origin feature/lab3-ci
             sudo systemctl restart mywebapp
           EOF
 
