@@ -49,7 +49,7 @@ jobs:
         uses: ibiqlik/action-yamllint@v3
         with:
           file_or_dir: .
-          config_file: .github/workflows/yamllint-config.yml
+          config_file: .github/yamllint-config.yml
 
   test:
     name: Automated Tests & Coverage
