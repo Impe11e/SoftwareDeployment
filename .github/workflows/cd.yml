@@ -1,0 +1,29 @@
+name: CD Pipeline
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  deploy:
+    name: Deploy to Target Node
+    environment: production
+    runs-on: self-hosted
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy via SSH
+        run: |
+          ssh -o StrictHostKeyChecking=no student@${{ secrets.TARGET_IP }} << 'EOF'
+            cd ~/software_deployment/lab3
+            git pull origin feature/lab3-ci
+            sudo systemctl restart mywebapp
+          EOF
+
+      - name: Verification
+        run: |
+          echo "Waiting for app to initialize..."
+          sleep 15
+          curl -f http://${{ secrets.TARGET_IP }}:8080/ || (echo "Deployment failed" && exit 1)
