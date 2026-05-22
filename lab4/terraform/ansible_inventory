@@ -1,0 +1,10 @@
+[db_nodes]
+db_server ansible_host=10.10.10.10
+
+[worker_nodes]
+worker_server ansible_host=10.10.10.20
+
+[all:vars]
+ansible_user=ansible
+ansible_ssh_pass=12345678
+ansible_ssh_common_args='-o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o IdentitiesOnly=yes'

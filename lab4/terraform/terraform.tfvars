@@ -1,0 +1,1 @@
+ssh_key_path = "/home/student/.ssh/id_rsa.pub"
