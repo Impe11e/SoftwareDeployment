@@ -1,0 +1,20 @@
+- name: update apt cache
+  apt:
+    update_cache: yes
+
+- name: install basic packages
+  apt:
+    name:
+      - curl
+      - vim
+      - htop
+      - net-tools
+    state: present
+
+- name: create gradebook
+  copy:
+    dest: /home/teacher/gradebook
+    content: "27"
+    owner: teacher
+    group: teacher
+    mode: '0644'

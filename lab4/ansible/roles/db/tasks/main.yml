@@ -1,0 +1,45 @@
+- name: install mysql server
+  apt:
+    name: mysql-server
+    state: present
+
+- name: start mysql
+  service:
+    name: mysql
+    state: started
+    enabled: yes
+
+- name: install ufw
+  apt:
+    name: ufw
+    state: present
+
+- name: allow ssh
+  ufw:
+    rule: allow
+    port: 22
+
+- name: allow mysql from worker only
+  ufw:
+    rule: allow
+    from_ip: 10.10.10.20
+    port: 3306
+
+- name: deny mysql from others
+  ufw:
+    rule: deny
+    port: 3306
+
+- name: set default deny incoming
+  ufw:
+    direction: incoming
+    policy: deny
+
+- name: set default allow outgoing
+  ufw:
+    direction: outgoing
+    policy: allow
+
+- name: enable ufw
+  ufw:
+    state: enabled

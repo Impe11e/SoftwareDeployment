@@ -1,0 +1,27 @@
+- name: create ansible user
+  user:
+    name: ansible
+    password: "{{ '12345678' | password_hash('sha512') }}"
+    groups: sudo
+    shell: /bin/bash
+
+- name: create teacher user
+  user:
+    name: teacher
+    password: "{{ '12345678' | password_hash('sha512') }}"
+    groups: sudo
+    shell: /bin/bash
+
+- name: create app user
+  user:
+    name: app
+    system: yes
+    shell: /usr/sbin/nologin
+
+- name: create operator user
+  user:
+    name: operator
+    password: "{{ '12345678' | password_hash('sha512') }}"
+    shell: /bin/bash
+
+- import_tasks: sudo.yml

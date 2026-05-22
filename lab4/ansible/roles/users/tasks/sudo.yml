@@ -1,0 +1,7 @@
+- name: operator sudo restrictions
+  copy:
+    dest: /etc/sudoers.d/operator
+    content: |
+      operator ALL=NOPASSWD: /bin/systemctl restart nginx, /bin/systemctl restart mysql
+      operator ALL=NOPASSWD: /bin/systemctl status nginx, /bin/systemctl status mysql
+    mode: '0440'
