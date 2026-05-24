@@ -1,0 +1,49 @@
+---
+- name: install postgresql
+  apt:
+    name:
+      - postgresql
+      - postgresql-contrib
+    state: present
+    update_cache: yes
+
+- name: start postgresql
+  service:
+    name: postgresql
+    state: started
+    enabled: yes
+
+- name: install ufw
+  apt:
+    name: ufw
+    state: present
+
+- name: allow ssh
+  ufw:
+    rule: allow
+    port: 22
+
+- name: allow postgres from worker only
+  ufw:
+    rule: allow
+    from_ip: 10.10.10.20
+    port: 5432
+
+- name: deny postgres from others
+  ufw:
+    rule: deny
+    port: 5432
+
+- name: set default deny incoming
+  ufw:
+    direction: incoming
+    policy: deny
+
+- name: set default allow outgoing
+  ufw:
+    direction: outgoing
+    policy: allow
+
+- name: enable ufw
+  ufw:
+    state: enabled

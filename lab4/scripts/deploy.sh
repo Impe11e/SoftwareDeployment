@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-ROOT_DIR="/home/student/software_deployment/lab1"
+ROOT_DIR="/home/student/software_deployment/lab3"
 APP_DIR="$ROOT_DIR/mywebapp"
 VARIANT=27
 
@@ -26,7 +26,7 @@ sudo chmod 640 /etc/mywebapp/config.json
 
 sudo chmod +x /home/student
 sudo chmod +x /home/student/software_deployment
-sudo chmod +x /home/student/software_deployment/lab1
+sudo chmod +x /home/student/software_deployment/lab3
 
 cd "$APP_DIR"
 npm install --production
