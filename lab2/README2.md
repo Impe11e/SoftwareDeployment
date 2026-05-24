@@ -1,6 +1,6 @@
 # Автоматизація розгортання багатокомпонентних застосунків за допомогою Docker Compose
 
-[Дослідницька Частина (GoogleDocs)](https://docs.google.com/document/d/1hUewAsvL2qPLmVVms2adICArbvuVr8_HCsBg-0VCpOs/edit?usp=sharing)
+[Дослідницька Частина (GoogleDocs)](https://docs.google.com/document/d/1ilCktZuNkING341r-MWS2cisO5O2R9U0YbTfaDQBILk/edit?usp=sharing)
 
 ## 1. Опис архітектури та кроки реалізації
 
