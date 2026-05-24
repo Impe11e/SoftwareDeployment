@@ -1,0 +1,13 @@
+[Unit]
+Description=MyWebApp
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=/home/ansible/mywebapp
+ExecStart=/usr/bin/node /home/ansible/mywebapp/index.js
+Restart=always
+User=ansible
+
+[Install]
+WantedBy=multi-user.target

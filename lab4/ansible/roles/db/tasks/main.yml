@@ -1,11 +1,15 @@
-- name: install mysql server
+---
+- name: install postgresql
   apt:
-    name: mysql-server
+    name:
+      - postgresql
+      - postgresql-contrib
     state: present
+    update_cache: yes
 
-- name: start mysql
+- name: start postgresql
   service:
-    name: mysql
+    name: postgresql
     state: started
     enabled: yes
 
@@ -19,16 +23,16 @@
     rule: allow
     port: 22
 
-- name: allow mysql from worker only
+- name: allow postgres from worker only
   ufw:
     rule: allow
     from_ip: 10.10.10.20
-    port: 3306
+    port: 5432
 
-- name: deny mysql from others
+- name: deny postgres from others
   ufw:
     rule: deny
-    port: 3306
+    port: 5432
 
 - name: set default deny incoming
   ufw:

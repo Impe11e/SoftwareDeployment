@@ -1,7 +1,58 @@
-- name: install nginx
+
+- name: install system packages
   apt:
-    name: nginx
+    name:
+      - nginx
+      - nodejs
+      - npm
     state: present
+    update_cache: yes
+
+
+- name: create app directory
+  file:
+    path: /home/ansible/mywebapp
+    state: directory
+    owner: ansible
+    group: ansible
+    mode: "0755"
+
+- name: copy application
+  copy:
+    src: mywebapp/
+    dest: /home/ansible/mywebapp/
+    owner: ansible
+    group: ansible
+    mode: "0755"
+
+- name: create config directory
+  file:
+    path: /etc/mywebapp
+    state: directory
+    mode: "0755"
+
+- name: deploy config
+  template:
+    src: config.json.j2
+    dest: /etc/mywebapp/config.json
+    mode: "0644"
+
+
+- name: install systemd service
+  template:
+    src: mywebapp.service.j2
+    dest: /etc/systemd/system/mywebapp.service
+    mode: "0644"
+
+- name: reload systemd
+  systemd:
+    daemon_reload: yes
+
+- name: enable and start app
+  systemd:
+    name: mywebapp
+    state: started
+    enabled: yes
 
 - name: deploy nginx config
   template:
@@ -9,7 +60,7 @@
     dest: /etc/nginx/sites-available/default
   notify: restart nginx
 
-- name: start nginx
+- name: ensure nginx running
   service:
     name: nginx
     state: started
