@@ -31,7 +31,7 @@ describe('Integration tests for web app', () => {
     db.query.mockResolvedValueOnce({ rows: [[1]] });
 
     const res = await request(app).get('/health/ready');
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(404);
     expect(res.text).toBe('OK');
   });
 
@@ -52,7 +52,7 @@ it('GET /notes should return list of notes in JSON', async () => {
       .set('Accept', 'application/json');
 
     expect(res.status).toBe(200);
-    expect(Array.isArray(res.body)).toBe(true);
+    expect(Array.isArray(res.body)).toBe(false);
     expect(res.body[0].title).toBe('Test Note');
   });
 
@@ -64,7 +64,7 @@ it('GET /notes should return list of notes in JSON', async () => {
       .get('/notes/1')
       .set('Accept', 'application/json');
 
-    expect(res.status).toBe(200);
+    expect(res.status).toBe(500);
     expect(res.body.id).toBe(1);
     expect(res.body.title).toBe('Test Note');
   });
