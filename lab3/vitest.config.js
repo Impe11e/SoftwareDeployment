@@ -7,11 +7,12 @@ export default defineConfig({
       reporter: ['text', 'json', 'html'],
       include: ['mywebapp/src/app.js', 'mywebapp/src/controllers/**', 'mywebapp/src/services/**'],
       thresholds: {
-        lines: 40,
-        functions: 40,
-        branches: 40,
-        statements: 40
+        lines: 100,
+        functions: 100,
+        branches: 100,
+        statements: 100
       }
     },
   },
 });
+
